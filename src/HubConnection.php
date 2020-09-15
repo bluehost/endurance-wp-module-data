@@ -36,6 +36,43 @@ class HubConnection implements SubscriberInterface {
 	}
 
 	/**
+	 * Register the hooks required for site verification
+	 *
+	 * @return void
+	 */
+	public function register_verification_hooks() {
+		add_action( 'rest_api_init', array( $this, 'rest_api_init' ) );
+
+	}
+
+	/**
+	 * Set up REST API routes
+	 *
+	 * @return void
+	 */
+	public function rest_api_init() {
+		$controller = new API\Verify( $this );
+		$controller->register_routes();
+	}
+
+	/**
+	 * Confirm whether verification token is valid
+	 *
+	 * @param string $token Token to verify
+	 * @return boolean
+	 */
+	public function verify( $token ) {
+		$saved_token = get_transient( 'bh_data_verify_token' );
+
+		if ( $saved_token && $saved_token === $token ) {
+			delete_transient( 'bh_data_verify_token' );
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Check whether site has established connection to hub
 	 *
 	 * @return boolean
