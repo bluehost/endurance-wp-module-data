@@ -62,7 +62,7 @@ class HubConnection implements SubscriberInterface {
 	 * @return void
 	 */
 	public function ajax_verify() {
-		$valid  = $this->verify( $_REQUEST['token'] );
+		$valid  = $this->verify_token( $_REQUEST['token'] );
 		$status = ( $valid ) ? 200 : 400;
 
 		$data = array(
@@ -78,7 +78,7 @@ class HubConnection implements SubscriberInterface {
 	 * @param string $token Token to verify
 	 * @return boolean
 	 */
-	public function verify( $token ) {
+	public function verify_token( $token ) {
 		$saved_token = get_transient( 'bh_data_verify_token' );
 
 		if ( $saved_token && $saved_token === $token ) {

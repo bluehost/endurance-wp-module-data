@@ -70,7 +70,7 @@ class Verify extends WP_REST_Controller {
 	 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function get_items( $request ) {
-		$valid  = $this->hub->verify( $request['token'] );
+		$valid  = $this->hub->verify_token( $request['token'] );
 		$status = ( $valid ) ? 200 : 401;
 
 		$response = new WP_REST_Response(
