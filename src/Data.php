@@ -41,7 +41,7 @@ class Data {
 		// bail before registering the subscribers/listeners
 		if ( ! $this->hub->is_connected() ) {
 
-			// If we aren't connected, register the admin-ajax verification fallback
+			// Initialize the required verification endpoints
 			$this->hub->register_verification_hooks();
 
 			// Attempt to connect
