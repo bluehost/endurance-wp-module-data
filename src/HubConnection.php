@@ -42,6 +42,7 @@ class HubConnection implements SubscriberInterface {
 	 */
 	public function register_verification_hooks() {
 		add_action( 'rest_api_init', array( $this, 'rest_api_init' ) );
+		add_action( 'wp_ajax_nopriv_bh-hub-verify', array( $this, 'ajax_verify' ) );
 
 	}
 
@@ -53,6 +54,22 @@ class HubConnection implements SubscriberInterface {
 	public function rest_api_init() {
 		$controller = new API\Verify( $this );
 		$controller->register_routes();
+	}
+
+	/**
+	 * Process the admin-ajax request
+	 *
+	 * @return void
+	 */
+	public function ajax_verify() {
+		$valid  = $this->verify( $_REQUEST['token'] );
+		$status = ( $valid ) ? 200 : 400;
+
+		$data = array(
+			'token' => $_REQUEST['token'],
+			'valid' => $valid,
+		);
+		wp_send_json( $data, $status );
 	}
 
 	/**
