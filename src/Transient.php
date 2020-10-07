@@ -49,7 +49,7 @@ class Transient {
 	 * @return boolean Whether the value was saved
 	 */
 	public static function set( $key, $value, $expires = null ) {
-		$expiration = ( $expires ) ? time() + $expires : time() + 60 * MINUTE_IN_SECONDS;
+		$expiration = ( $expires ) ? $expires : 60 * MINUTE_IN_SECONDS;
 		if ( self::should_use_transients() ) {
 			return set_transient( $key, $value, $expiration );
 		}
