@@ -22,7 +22,7 @@ class Cron extends Listener {
 
 		// Register the cron task
 		if ( ! wp_next_scheduled( 'bh_data_cron' ) ) {
-			wp_schedule_event( time() + WEEK_IN_SECONDS, 'weekly', 'bh_data_cron' );
+			wp_schedule_event( time() + DAY_IN_SECONDS, 'weekly', 'bh_data_cron' );
 		}
 
 	}
