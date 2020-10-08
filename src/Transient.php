@@ -31,9 +31,11 @@ class Transient {
 		}
 
 		$data = get_option( $key );
-		if ( ! empty( $data ) ) {
-			if ( isset( $data['expires'] ) && $data['expires'] > time() ) {
+		if ( ! empty( $data ) && isset( $data['expires'] ) ) {
+			if ( $data['expires'] > time() ) {
 				return $data['value'];
+			} else {
+				delete_option( $key );
 			}
 		}
 
@@ -56,7 +58,7 @@ class Transient {
 
 		$data = array(
 			'value'   => $value,
-			'expires' => $expiration,
+			'expires' => $expiration + time(),
 		);
 		return update_option( $key, $data, false );
 	}
