@@ -162,6 +162,7 @@ class EventManager {
 	 * @return void
 	 */
 	public function push( Event $event ) {
+		do_action( 'bh_event_log', $event->key, $event );
 		array_push( $this->queue, $event );
 	}
 
