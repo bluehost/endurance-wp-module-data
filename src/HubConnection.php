@@ -101,8 +101,8 @@ class HubConnection implements SubscriberInterface {
 	 *
 	 * @return boolean
 	 */
-	public function is_connected() {
-		return (bool) ( $this->get_auth_token() );
+	public static function is_connected() {
+		return (bool) ( self::get_auth_token() );
 	}
 
 	/**
@@ -212,7 +212,7 @@ class HubConnection implements SubscriberInterface {
 	public function notify( $events ) {
 
 		// If for some reason we are not connected, bail out now.
-		if ( ! $this->is_connected() ) {
+		if ( ! self::is_connected() ) {
 			return;
 		}
 
@@ -226,7 +226,7 @@ class HubConnection implements SubscriberInterface {
 			'headers'  => array(
 				'Content-Type'  => 'applicaton/json',
 				'Accept'        => 'applicaton/json',
-				'Authorization' => 'Bearer ' . $this->get_auth_token(),
+				'Authorization' => 'Bearer ' . self::get_auth_token(),
 			),
 			'blocking' => false,
 			'timeout'  => .5,
@@ -240,16 +240,12 @@ class HubConnection implements SubscriberInterface {
 	 *
 	 * @return string|null The decrypted token if it's set
 	 */
-	public function get_auth_token() {
-		if ( empty( $this->token ) ) {
-			$encrypted_token = get_option( 'bh_data_token' );
-			if ( false !== $encrypted_token ) {
-				$encryption  = new Encryption();
-				$this->token = $encryption->decrypt( $encrypted_token );
-			}
+	public static function get_auth_token() {
+		$encrypted_token = get_option( 'bh_data_token' );
+		if ( false !== $encrypted_token ) {
+			$encryption = new Encryption();
+			return $encryption->decrypt( $encrypted_token );
 		}
-
-		return $this->token;
 	}
 
 	/**
