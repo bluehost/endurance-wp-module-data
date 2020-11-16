@@ -53,7 +53,7 @@ class Data {
 		}
 
 		$manager = new EventManager();
-		$manager->initialize_listeners();
+		$manager->init();
 
 		$manager->add_subscriber( $this->hub );
 

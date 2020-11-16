@@ -205,19 +205,24 @@ class HubConnection implements SubscriberInterface {
 	/**
 	 * Post event data payload to the hub
 	 *
-	 * @param Event $event Event object representing the action that occurred
+	 * @param array $events Array of Event objects representing the actions that occurred
 	 *
 	 * @return void
 	 */
-	public function notify( Event $event ) {
+	public function notify( $events ) {
 
 		// If for some reason we are not connected, bail out now.
 		if ( ! $this->is_connected() ) {
 			return;
 		}
 
+		$payload = array(
+			'environment' => $this->get_core_data(),
+			'events'      => $events,
+		);
+
 		$args = array(
-			'body'     => wp_json_encode( $event ),
+			'body'     => wp_json_encode( $payload ),
 			'headers'  => array(
 				'Content-Type'  => 'applicaton/json',
 				'Accept'        => 'applicaton/json',
@@ -227,7 +232,7 @@ class HubConnection implements SubscriberInterface {
 			'timeout'  => .5,
 		);
 
-		wp_remote_post( $this->api . '/event', $args );
+		wp_remote_post( $this->api . '/events', $args );
 	}
 
 	/**
