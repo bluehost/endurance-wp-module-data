@@ -13,13 +13,13 @@ class EventManager {
 	 * @var array
 	 */
 	const LISTENERS = array(
-		'\\Listeners\\Admin',
-		'\\Listeners\\BHPlugin',
-		'\\Listeners\\Content',
-		'\\Listeners\\Cron',
-		'\\Listeners\\Jetpack',
-		'\\Listeners\\Plugin',
-		'\\Listeners\\Theme',
+		'\\Endurance\\WP\\Module\\Data\\Listeners\\Admin',
+		'\\Endurance\\WP\\Module\\Data\\Listeners\\BHPlugin',
+		'\\Endurance\\WP\\Module\\Data\\Listeners\\Content',
+		'\\Endurance\\WP\\Module\\Data\\Listeners\\Cron',
+		'\\Endurance\\WP\\Module\\Data\\Listeners\\Jetpack',
+		'\\Endurance\\WP\\Module\\Data\\Listeners\\Plugin',
+		'\\Endurance\\WP\\Module\\Data\\Listeners\\Theme',
 	);
 
 	/**
@@ -44,6 +44,7 @@ class EventManager {
 	public function init() {
 		$this->initialize_listeners();
 		$this->initialize_cron();
+		$this->initialize_rest_endpoint();
 
 		// Register the shutdown hook which sends or saves all queued events
 		add_action( 'shutdown', array( $this, 'shutdown' ) );
@@ -148,8 +149,7 @@ class EventManager {
 	 */
 	public function initialize_listeners() {
 		foreach ( $this->get_listeners() as $listener ) {
-			$classname = __NAMESPACE__ . $listener;
-			$class     = new $classname( $this );
+			$class = new $listener( $this );
 			$class->register_hooks();
 		}
 	}
