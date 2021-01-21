@@ -109,7 +109,7 @@ class Events extends WP_REST_Controller {
 		// If request isn't to be queued, we want the realtime response.
 		if ( ! $request['queue'] ) {
 			$notifications = [];
-			$hub_response  = $this->hub->notify( [ $event ] );
+			$hub_response  = $this->hub->notify( [ $event ], true );
 
 			if ( is_wp_error( $hub_response ) ) {
 				return new \WP_REST_Response( $hub_response->get_error_message(), 401 );
