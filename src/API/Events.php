@@ -122,7 +122,7 @@ class Events extends WP_REST_Controller {
 			}
 
 			$payload = json_decode( wp_remote_retrieve_body( $hub_response ) );
-			if ( $payload && is_array( $payload ) ) {
+			if ( $payload && is_array( $payload->data ) ) {
 				$notifications = $payload;
 			}
 
