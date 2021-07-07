@@ -2,6 +2,8 @@
 
 namespace Endurance\WP\Module\Data;
 
+use Endurance\WP\Module\Data\Listeners\Plugin;
+
 /**
  * Manages a Hub connection instance and interactions with it
  */
@@ -125,6 +127,7 @@ class HubConnection implements SubscriberInterface {
 
 		$data                 = $this->get_core_data();
 		$data['verify_token'] = $token;
+		$data['plugins']      = Plugin::collect_plugins();
 
 		$args = array(
 			'body'     => wp_json_encode( $data ),
@@ -261,7 +264,7 @@ class HubConnection implements SubscriberInterface {
 	public function get_core_data() {
 		global $wpdb, $wp_version;
 
-		return array(
+		$data = array(
 			'url'         => get_site_url(),
 			'php'         => phpversion(),
 			'mysql'       => $wpdb->db_version(),
@@ -269,7 +272,9 @@ class HubConnection implements SubscriberInterface {
 			'plugin'      => BLUEHOST_PLUGIN_VERSION,
 			'hostname'    => gethostname(),
 			'cache_level' => intval( get_option( 'endurance_cache_level', 2 ) ),
-			'cloudflare'  => get_option( 'endurance_cloudflare_enabled', false ),
+			'cloudflare'  => get_option( 'endurance_cloudflare_enabled', false )
 		);
+
+		return $data;
 	}
 }
