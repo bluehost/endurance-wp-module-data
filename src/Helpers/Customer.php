@@ -1,12 +1,6 @@
 <?php
 namespace Endurance\WP\Module\Data\Helpers;
 
-// DEBUG require statements
-require_once($_SERVER["DOCUMENT_ROOT"]."/wp-load.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/wp-content/plugins/bluehost-wordpress-plugin/inc/AccessToken.php");
-require_once($_SERVER["DOCUMENT_ROOT"]."/wp-content/plugins/bluehost-wordpress-plugin/inc/SiteMeta.php");
-
-use Endurance\WP\Module\Data\Helpers\Transient;
 use Bluehost\AccessToken;
 use Bluehost\SiteMeta;
 
@@ -21,17 +15,9 @@ class Customer {
      * @return array of customer data
 	 */
     public static function collect() {
-        $customer = json_encode( 
-            array_merge(
-                self::get_account_info(),
-                self::get_onboarding_info()
-            )
-        );
-        Transient::set( 'nfd_customer', $customer );
-        
-        // DEBUG
-        echo '<h3>Customer Data:</h3><code>'. $customer . '</code>';
-
+        $guapi = self::get_account_info();
+        $mole  = array( 'meta' => self::get_onboarding_info() );
+        $customer =  array_merge( $guapi, $mole );
 		return $customer;
 	}
 
@@ -60,9 +46,6 @@ class Customer {
             return;
         }
 
-        // DEBUG
-        echo '<h3>' . $url . '</h3><code>'. wp_remote_retrieve_body( $response ) . '</code>';
-
         return json_decode( wp_remote_retrieve_body( $response ) );
     }
 
@@ -77,10 +60,10 @@ class Customer {
         $response = self::connect( '/hosting-account-info' );
         
         // transfer relevant data to $info array
-        $info['cust_id']      = AccessToken::get_user();
+        $info['customer_id']  = AccessToken::get_user();
         $info['affiliate']    = $response->affiliate->id .":". $response->affiliate->tracking_code;
         $info['provider']     = $response->customer->provider;
-        $info['term']         = $response->plan->term;
+        $info['plan_term']    = $response->plan->term;
         $info['plan_type']    = $response->plan->type;
         $info['plan_subtype'] = $response->plan->subtype;
         $info['signup_date']  = $response->customer->signup_date;
@@ -107,7 +90,7 @@ class Customer {
 
         $help = self::normalize_help($response->description->help_needed); // normalize to 0-100
         if ( $help > 0 )
-            $info['help'] = $help;
+            $info['help_needed'] = $help;
            
         if ( isset( $response->site_intentions->want_blog ) ) 
             $info['want_blog'] = $response->site_intentions->want_blog;
@@ -116,7 +99,13 @@ class Customer {
             $info['want_store'] = $response->site_intentions->want_store;
         
         if ( isset( $response->site_intentions->type ) )
-            $info['vertical'] = $response->site_intentions->type .':'. $response->site_intentions->topic; 
+            $info['type'] = $response->site_intentions->type;
+
+        if ( isset( $response->site_intentions->topic ) )
+            $info['topic'] = $response->site_intentions->topic;
+
+        if ( isset( $response->site_intentions->owner ) )
+            $info['owner'] = $response->site_intentions->owner;
 
         return $info;
     }
@@ -180,7 +169,3 @@ class Customer {
     }
 
 }
-
-// DEBUG
-// Fire it off - this is just for testing- it will be called fron Cron job later on.
-Customer::collect();
