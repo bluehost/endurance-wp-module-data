@@ -90,13 +90,15 @@ class Customer {
 
         $help = self::normalize_help($response->description->help_needed); // normalize to 0-100
         if ( $help > 0 )
-            $info['help_needed'] = $help;
+            $info['help'] = $help;
            
-        if ( isset( $response->site_intentions->want_blog ) ) 
-            $info['want_blog'] = $response->site_intentions->want_blog;
+        $blog = $this->normalize_blog($response->site_intentions->want_blog);
+        if ( $blog > 0 ) 
+            $info['blog'] = $blog;
         
-        if ( isset( $response->site_intentions->want_store ) )
-            $info['want_store'] = $response->site_intentions->want_store;
+        $store = $this->normalize_store($response->site_intentions->want_store);
+        if ( $store > 0 )
+            $info['store'] = $store;
         
         if ( isset( $response->site_intentions->type ) )
             $info['type'] = $response->site_intentions->type;
@@ -108,6 +110,34 @@ class Customer {
             $info['owner'] = $response->site_intentions->owner;
 
         return $info;
+    }
+
+    /**
+     * Normalize blog
+     */
+    public static function normalize_blog($blog){
+        switch ($blog){
+            case '1':
+                return 20;
+                break;
+            default: // 0 or blank
+                return 0;
+                break;
+        }
+    }
+
+    /**
+     * Normalize store
+     */
+    public static function normalize_store($store){
+        switch ($store){
+            case '1':
+                return 20;
+                break;
+            default: // 0 or blank
+                return 0;
+                break;
+        }
     }
 
     /**
