@@ -92,11 +92,11 @@ class Customer {
         if ( $help > 0 )
             $info['help'] = $help;
            
-        $blog = $this->normalize_blog($response->site_intentions->want_blog);
+        $blog = self::normalize_blog($response->site_intentions->want_blog);
         if ( $blog > 0 ) 
             $info['blog'] = $blog;
         
-        $store = $this->normalize_store($response->site_intentions->want_store);
+        $store = self::normalize_store($response->site_intentions->want_store);
         if ( $store > 0 )
             $info['store'] = $store;
         
@@ -114,6 +114,8 @@ class Customer {
 
     /**
      * Normalize blog
+     * 
+     * For now this is just 0 or 20 values, but in the future we can update based on other factors and treat as a blog score
      */
     public static function normalize_blog($blog){
         switch ($blog){
@@ -128,6 +130,8 @@ class Customer {
 
     /**
      * Normalize store
+     * 
+     * For now this is just 0 or 20 values, but in the future we can update based on other factors and treat as a store score
      */
     public static function normalize_store($store){
         switch ($store){
