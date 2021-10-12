@@ -3,7 +3,6 @@
 namespace Endurance\WP\Module\Data\Listeners;
 
 use Endurance\WP\Module\Data\Helpers\Plugin;
-use Endurance\WP\Module\Data\Helpers\Customer;
 
 /**
  * Schedules Cron event listeners
@@ -37,7 +36,7 @@ class Cron extends Listener {
 	 */
 	public function update() {
 		$data = array(
-			'plugins'  => Plugin::collect_installed()
+			'plugins' => Plugin::collect_installed(),
 		);
 
 		$data = apply_filters( 'endurance_wp_data_module_cron_data_filter', $data );
