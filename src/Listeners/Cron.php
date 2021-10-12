@@ -37,9 +37,10 @@ class Cron extends Listener {
 	 */
 	public function update() {
 		$data = array(
-			'plugins'  => Plugin::collect_installed(),
-			'customer' => Customer::collect(),
+			'plugins'  => Plugin::collect_installed()
 		);
+
+		$data = apply_filters( 'endurance_wp_data_module_cron_data_filter', $data );
 
 		$this->push( 'cron', $data );
 	}
