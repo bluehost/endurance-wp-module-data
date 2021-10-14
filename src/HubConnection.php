@@ -273,6 +273,7 @@ class HubConnection implements SubscriberInterface {
 			'hostname'    => gethostname(),
 			'mysql'       => $wpdb->db_version(),
 			'php'         => phpversion(),
+			'plugin'      => BLUEHOST_PLUGIN_VERSION,
 			'url'         => get_site_url(),
 			'wp'          => $wp_version,
 		);
