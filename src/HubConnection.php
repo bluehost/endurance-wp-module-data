@@ -298,15 +298,16 @@ class HubConnection implements SubscriberInterface {
 		global $wpdb, $wp_version;
 
 		return array(
-			'url'         => get_site_url(),
-			'php'         => phpversion(),
-			'mysql'       => $wpdb->db_version(),
-			'wp'          => $wp_version,
 			'brand'       => get_option( 'mm_brand', 'false' ),
-			'origin'      => self::get_origin_plugin(),
-			'hostname'    => gethostname(),
 			'cache_level' => intval( get_option( 'endurance_cache_level', 2 ) ),
 			'cloudflare'  => get_option( 'endurance_cloudflare_enabled', false ),
+			'email'       => get_option( 'admin_email' ),
+			'hostname'    => gethostname(),
+			'mysql'       => $wpdb->db_version(),
+			'origin'      => self::get_origin_plugin(),
+			'php'         => phpversion(),
+			'url'         => get_site_url(),
+			'wp'          => $wp_version,
 		);
 
 	}
