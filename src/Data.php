@@ -39,6 +39,7 @@ class Data {
 
 		// Delays our primary module setup until init
 		add_action( 'init', array( $this, 'init' ) );
+		add_action( 'rest_authentication_errors', array( $this, 'authenticate' ) );
 
 	}
 
@@ -77,6 +78,52 @@ class Data {
 			$this->logger = new Logger();
 			$manager->add_subscriber( $this->logger );
 		}
+
+	}
+
+	/**
+	 * Authenticate incoming REST API requests.
+	 *
+	 * @param bool|null|\WP_Error $status
+	 *
+	 * @return bool|null|\WP_Error
+	 */
+	public function authenticate( $status ) {
+
+		// Make sure there wasn't a different authentication method used before this
+		if ( ! is_null( $status ) ) {
+			return $status;
+		}
+
+		// Make sure this is a REST API request
+		if ( ! defined( 'REST_REQUEST' ) || ! REST_REQUEST ) {
+			return $status;
+		}
+
+		// If no auth header included, bail to allow a different auth method
+		if ( empty( $_SERVER['HTTP_AUTHORIZATION'] ) ) {
+			return null;
+		}
+
+		$token = str_replace( 'Bearer ', '', $_SERVER['HTTP_AUTHORIZATION'] );
+
+		$is_valid = hash( 'sha256', strrev( HubConnection::get_auth_token() ) ) === $token;
+
+		// Allow access if token is valid
+		if ( $is_valid ) {
+
+			$admins = get_users( array( 'role' => 'administrator' ) );
+			$admin  = array_shift( $admins );
+
+			if ( ! empty( $admin ) && is_a( $admin, \WP_User::class ) ) {
+				wp_set_current_user( $admin->id );
+
+				return true;
+			}
+		}
+
+		// Don't return false, since we could be interfering with a basic auth implementation.
+		return null;
 
 	}
 
