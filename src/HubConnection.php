@@ -298,7 +298,7 @@ class HubConnection implements SubscriberInterface {
 		global $wpdb, $wp_version;
 
 		return array(
-			'brand'       => get_option( 'mm_brand', 'false' ),
+			'brand'       => sanitize_title( get_option( 'mm_brand', 'false' ) ),
 			'cache_level' => intval( get_option( 'endurance_cache_level', 2 ) ),
 			'cloudflare'  => get_option( 'endurance_cloudflare_enabled', false ),
 			'email'       => get_option( 'admin_email' ),
