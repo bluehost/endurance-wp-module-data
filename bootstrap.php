@@ -11,18 +11,21 @@ if ( function_exists( 'add_action' ) ) {
  * Register the data module
  */
 function eig_module_data_register() {
-	// only register module if it's not already registered
-    if ( ! class_exists( 'Endurance\WP\Module\Data\HubConnection' ) ) {
-		eig_register_module(
-			array(
-				'name'     => 'data',
-				'label'    => __( 'Data', 'endurance' ),
-				'callback' => 'eig_module_data_load',
-				'isActive' => true,
-				'isHidden' => true,
-			)
-		);
+	// exit if module manager does not exist
+	// OR data module is already active
+	if ( ! class_exists( 'Endurance_ModuleManager') || Endurance_ModuleManager::isModuleActive('data') ) {
+		return;
 	}
+	
+	eig_register_module(
+		array(
+			'name'     => 'data',
+			'label'    => __( 'Data', 'endurance' ),
+			'callback' => 'eig_module_data_load',
+			'isActive' => true,
+			'isHidden' => true,
+		)
+	);
 }
 
 /**
