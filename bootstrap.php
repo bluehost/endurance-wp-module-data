@@ -1,6 +1,7 @@
 <?php
 
 use Endurance\WP\Module\Data\Data;
+use Endurance\WP\Module\Data\Helpers\Multibrand;
 use Endurance\WP\Module\Data\Helpers\Transient;
 
 // Define constants
@@ -47,12 +48,12 @@ function eig_module_data_load() {
 /**
  * Register activation hook outside init so it will fire on activation.
  */
-function bh_plugin_activate() {
-	Transient::set( 'bh_plugin_activated', 1 );
+function nfd_plugin_activate() {
+	Transient::set( 'nfd_plugin_activated', Multibrand::get_origin_plugin_slug() );
 }
 if ( function_exists( 'register_activation_hook' ) ) {
 	register_activation_hook(
-		'bluehost-wordpress-plugin/bluehost-wordpress-plugin.php',
-		'bh_plugin_activate'
+		Multibrand::get_origin_plugin_slug(),
+		'nfd_plugin_activate'
 	);
 }

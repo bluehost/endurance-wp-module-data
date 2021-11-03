@@ -22,13 +22,13 @@ class Plugin extends Listener {
 		add_action( 'deleted_plugin', array( $this, 'deleted' ), 10, 2 );
 		add_action( 'upgrader_process_complete', array( $this, 'installed_or_updated' ), 10, 2 );
 
-		// transient found - bh plugin was just activated, send that event
-		if ( Transient::get( 'bh_plugin_activated' ) ) {
+		// transient found - nfd plugin was just activated, send that event
+		if ( Transient::get( 'nfd_plugin_activated' ) ) {
 			$this->activated(
-				'bluehost-wordpress-plugin/bluehost-wordpress-plugin.php',
+				Transient::get( 'nfd_plugin_activated' ),
 				false
 			);
-			Transient::delete( 'bh_plugin_activated' );
+			Transient::delete( 'nfd_plugin_activated' );
 		}
 	}
 

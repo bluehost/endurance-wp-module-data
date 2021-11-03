@@ -2,8 +2,9 @@
 
 namespace Endurance\WP\Module\Data;
 
-use Endurance\WP\Module\Data\Helpers\Plugin as PluginHelper;
 use Endurance\WP\Module\Data\Helpers\Encryption;
+use Endurance\WP\Module\Data\Helpers\Multibrand;
+use Endurance\WP\Module\Data\Helpers\Plugin as PluginHelper;
 use Endurance\WP\Module\Data\Helpers\Transient;
 
 /**
@@ -258,50 +259,6 @@ class HubConnection implements SubscriberInterface {
 		}
 	}
 
-	/**
-	 * Get originating plugin
-	 * 
-	 * @return string
-	 */
-	public function get_origin_plugin() {
-		$reflector = new \ReflectionClass( get_class( $this ) );
-		$plugin_file = '';
-		$plugins     = get_plugins();
-		$file        = plugin_basename( $reflector->getFileName() );
-		if ( array_key_exists( $file, $plugins ) ) {
-			$plugin_file = $file;
-		} else {
-			$paths    = explode( '/', $file );
-			$root_dir = array_shift( $paths );
-			foreach ( $plugins as $path => $data ) {
-				if ( 0 === strpos( $path, $root_dir ) ) {
-					$plugin_file = $path;
-					break;
-				}
-			}
-		}
-
-		// check if path is outside of plugins dir, ie file not contained within a plugin (our ewphub local setup)
-		if ( '' === $plugin_file ) {
-			$plugin_file = $file;
-		}
-
-		return $plugin_file;
-	}
-
-	/**
-	 * Get originating plugin version
-	 * 
-	 * @return version string
-	 */
-	public function get_origin_version() {	
-		if ( defined( 'BLUEHOST_PLUGIN_VERSION' ) ) {
-			return BLUEHOST_PLUGIN_VERSION;
-		}
-		if ( defined( 'MM_VERSION' ) ) {
-			return MM_VERSION;
-		}
-	}
 
 	/**
 	 * Get core site data for initial connection
@@ -319,9 +276,9 @@ class HubConnection implements SubscriberInterface {
 			'email'       => get_option( 'admin_email' ),
 			'hostname'    => gethostname(),
 			'mysql'       => $wpdb->db_version(),
-			'origin'      => self::get_origin_plugin(),
+			'origin'      => Multibrand::get_origin_plugin_name(),
 			'php'         => phpversion(),
-			'plugin'      => self::get_origin_version(),
+			'plugin'      => Multibrand::get_origin_plugin_version(),
 			'url'         => get_site_url(),
 			'wp'          => $wp_version,
 		);
