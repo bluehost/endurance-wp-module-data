@@ -290,6 +290,20 @@ class HubConnection implements SubscriberInterface {
 	}
 
 	/**
+	 * Get originating plugin version
+	 * 
+	 * @return version string
+	 */
+	public function get_origin_version() {	
+		if ( defined( 'BLUEHOST_PLUGIN_VERSION' ) ) {
+			return BLUEHOST_PLUGIN_VERSION;
+		}
+		if ( defined( 'MM_VERSION' ) ) {
+			return MM_VERSION;
+		}
+	}
+
+	/**
 	 * Get core site data for initial connection
 	 *
 	 * @return array
