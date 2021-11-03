@@ -3,6 +3,14 @@
 use Endurance\WP\Module\Data\Data;
 use Endurance\WP\Module\Data\Helpers\Transient;
 
+// Define constants
+// Do not allow multiple copies of the module to be active
+if ( defined( 'DATA_MODULE_VERSION' ) ) {
+	exit;
+} else {
+	define( 'DATA_MODULE_VERSION', '1.7.0' );
+}
+
 if ( function_exists( 'add_action' ) ) {
 	add_action( 'after_setup_theme', 'eig_module_data_register' );
 }
