@@ -84,14 +84,9 @@ class Multibrand {
 			}
 		}
 
-		// plugin_file still not set? just return the full path
+		// not found yet? just return the full path
 		// ie file not contained within a plugin (our ewphub local setup)
-		if ( '' === $plugin_file ) {
-			return $file;
-		}
-
-		// if none of those then what?
-		return 'unknown';
+		return $file;
 	}
 
 }
