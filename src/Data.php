@@ -2,6 +2,8 @@
 
 namespace Endurance\WP\Module\Data;
 
+use wpscholar\Url;
+
 /**
  * Main class for the data plugin module
  */
@@ -107,7 +109,17 @@ class Data {
 
 		$token = str_replace( 'Bearer ', '', $_SERVER['HTTP_AUTHORIZATION'] );
 
-		$is_valid = hash( 'sha256', strrev( HubConnection::get_auth_token() ) ) === $token;
+		$data = [
+			'method'    => $_SERVER['REQUEST_METHOD'],
+			'url'       => Url::getCurrentUrl(),
+			'body'      => file_get_contents( 'php://input' ),
+			'timestamp' => data_get( getallheaders(), 'X-Timestamp' ),
+		];
+
+		$hash = hash( 'sha256', wp_json_encode( $data ) );
+		$salt = hash( 'sha256', strrev( HubConnection::get_auth_token() ) );
+
+		$is_valid = hash( 'sha256', $hash . $salt ) === $token;
 
 		// Allow access if token is valid
 		if ( $is_valid ) {
