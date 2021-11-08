@@ -15,14 +15,16 @@ class Multibrand {
 	public static function get_origin_plugin() {
 		if ( defined( 'BLUEHOST_PLUGIN_VERSION' ) ) {
 			return array(
-                'name' => 'Bluehost',
+                'id' => 'bluehost',
+				'name' => 'Bluehost',
                 'slug' => 'bluehost-wordpress-plugin/bluehost-wordpress-plugin.php',
                 'version' => BLUEHOST_PLUGIN_VERSION,
             );
 		}
 		if ( defined( 'MM_VERSION' ) ) {
 			return array(
-                'name' => 'Mojo',
+				'id' => 'mojo',
+                'name' => 'MOJO Marketplace',
                 'slug' => 'mojo-marketplace-wp-plugin/mojo-marketplace.php',
                 'version' => MM_VERSION,
             );
@@ -33,7 +35,7 @@ class Multibrand {
 	/**
 	 * Get originating plugin version
 	 * 
-	 * @return version string
+	 * @return string
 	 */
 	public static function get_origin_plugin_version() {	
 		$origin = self::get_origin_plugin();
@@ -41,9 +43,19 @@ class Multibrand {
 	}
 
 	/**
+	 * Get originating plugin id
+	 * 
+	 * @return string
+	 */
+	public static function get_origin_plugin_id() {	
+		$origin = self::get_origin_plugin();
+        return $origin['id'];
+	}
+
+	/**
 	 * Get originating plugin name
 	 * 
-	 * @return name string
+	 * @return string
 	 */
 	public static function get_origin_plugin_name() {	
 		$origin = self::get_origin_plugin();
@@ -53,7 +65,7 @@ class Multibrand {
 	/**
 	 * Get originating plugin slug
 	 * 
-	 * @return slug string
+	 * @return string
 	 */
 	public static function get_origin_plugin_slug() {	
 		$origin = self::get_origin_plugin();

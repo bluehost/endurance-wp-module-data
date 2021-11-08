@@ -276,7 +276,7 @@ class HubConnection implements SubscriberInterface {
 			'email'       => get_option( 'admin_email' ),
 			'hostname'    => gethostname(),
 			'mysql'       => $wpdb->db_version(),
-			'origin'      => Multibrand::get_origin_plugin_name(),
+			'origin'      => Multibrand::get_origin_plugin_id(),
 			'php'         => phpversion(),
 			'plugin'      => Multibrand::get_origin_plugin_version(),
 			'url'         => get_site_url(),
