@@ -272,7 +272,7 @@ class HubConnection implements SubscriberInterface {
 			'brand'       => sanitize_title( get_option( 'mm_brand', 'false' ) ),
 			'cache_level' => intval( get_option( 'endurance_cache_level', 2 ) ),
 			'cloudflare'  => get_option( 'endurance_cloudflare_enabled', false ),
-			'data'        => DATA_MODULE_VERSION,
+			'data'        => NFD_DATA_MODULE_VERSION,
 			'email'       => get_option( 'admin_email' ),
 			'hostname'    => gethostname(),
 			'mysql'       => $wpdb->db_version(),

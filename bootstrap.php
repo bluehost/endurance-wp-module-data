@@ -6,10 +6,10 @@ use Endurance\WP\Module\Data\Helpers\Transient;
 
 // Define constants
 // Do not allow multiple copies of the module to be active
-if ( defined( 'DATA_MODULE_VERSION' ) ) {
+if ( defined( 'NFD_DATA_MODULE_VERSION' ) ) {
 	exit;
 } else {
-	define( 'DATA_MODULE_VERSION', '1.7.0' );
+	define( 'NFD_DATA_MODULE_VERSION', '1.7.0' );
 }
 
 if ( function_exists( 'add_action' ) ) {
