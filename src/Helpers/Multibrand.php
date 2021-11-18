@@ -15,19 +15,19 @@ class Multibrand {
 	public static function get_origin_plugin() {
 		if ( defined( 'BLUEHOST_PLUGIN_VERSION' ) ) {
 			return array(
-                'id' => 'bluehost',
+				'id' => 'bluehost',
 				'name' => 'Bluehost',
-                'slug' => 'bluehost-wordpress-plugin/bluehost-wordpress-plugin.php',
-                'version' => BLUEHOST_PLUGIN_VERSION,
-            );
+				'slug' => 'bluehost-wordpress-plugin/bluehost-wordpress-plugin.php',
+				'version' => BLUEHOST_PLUGIN_VERSION,
+			);
 		}
 		if ( defined( 'MM_VERSION' ) ) {
 			return array(
 				'id' => 'mojo',
-                'name' => 'MOJO Marketplace',
-                'slug' => 'mojo-marketplace-wp-plugin/mojo-marketplace.php',
-                'version' => MM_VERSION,
-            );
+				'name' => 'MOJO Marketplace',
+				'slug' => 'mojo-marketplace-wp-plugin/mojo-marketplace.php',
+				'version' => MM_VERSION,
+			);
 		}
 		return 'unknown';
 	}
@@ -39,7 +39,7 @@ class Multibrand {
 	 */
 	public static function get_origin_plugin_version() {	
 		$origin = self::get_origin_plugin();
-        return $origin['version'];
+		return $origin['version'];
 	}
 
 	/**
@@ -49,7 +49,7 @@ class Multibrand {
 	 */
 	public static function get_origin_plugin_id() {	
 		$origin = self::get_origin_plugin();
-        return $origin['id'];
+		return $origin['id'];
 	}
 
 	/**
@@ -59,7 +59,7 @@ class Multibrand {
 	 */
 	public static function get_origin_plugin_name() {	
 		$origin = self::get_origin_plugin();
-        return $origin['name'];
+		return $origin['name'];
 	}
 
 	/**
@@ -69,7 +69,7 @@ class Multibrand {
 	 */
 	public static function get_origin_plugin_slug() {	
 		$origin = self::get_origin_plugin();
-        return $origin['slug'];
+		return $origin['slug'];
 	}
 
 	/**
