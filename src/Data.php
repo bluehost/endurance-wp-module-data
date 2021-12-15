@@ -124,11 +124,21 @@ class Data {
 		// Allow access if token is valid
 		if ( $is_valid ) {
 
-			$admins = get_users( array( 'role' => 'administrator' ) );
-			$admin  = array_shift( $admins );
+			if ( isset( $_GET['user_id'] ) ) {
 
-			if ( ! empty( $admin ) && is_a( $admin, \WP_User::class ) ) {
-				wp_set_current_user( $admin->id );
+				// If a user ID is provided, use it to find the desired user.
+				$user = get_user_by( 'id', filter_input( INPUT_GET, 'user_id', FILTER_SANITIZE_NUMBER_INT ) );
+
+			} else {
+
+				// If no user ID is provided, find the first admin user.
+				$admins = get_users( array( 'role' => 'administrator' ) );
+				$user   = array_shift( $admins );
+
+			}
+
+			if ( ! empty( $user ) && is_a( $user, \WP_User::class ) ) {
+				wp_set_current_user( $user->id );
 
 				return true;
 			}
