@@ -40,5 +40,8 @@
     "allow-plugins": {
       "dealerdirect/phpcodesniffer-composer-installer": true
     }
+  },
+  "require": {
+    "wpscholar/url": "^1.2"
   }
 }
