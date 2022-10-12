@@ -1,6 +1,7 @@
 {
   "name": "endurance/wp-module-data",
   "description": "Endurance Data Module",
+  "abandoned": "newfold-labs/wp-module-data",
   "type": "library",
   "license": "GPL-2.0-or-later",
   "repositories": [
